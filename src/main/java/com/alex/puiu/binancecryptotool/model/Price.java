@@ -1,4 +1,4 @@
-package com.alex.puiu.binancecryptotool.dto;
+package com.alex.puiu.binancecryptotool.model;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -45,7 +45,7 @@ public class Currency {
                     this.quantity = this.quantity.add(transaction.getQuantity());
                     this.value = this.value.add(transaction.getValue());
                     break;
-                case SALE:
+                case SELL:
                     this.quantity = this.quantity.subtract(transaction.getQuantity());
                     this.value = this.value.subtract(transaction.getValue());
             }
