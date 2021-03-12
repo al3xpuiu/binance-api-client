@@ -2,23 +2,25 @@ package com.alex.puiu.binancecryptotool.service;
 
 import com.alex.puiu.binancecryptotool.model.Price;
 import com.alex.puiu.binancecryptotool.model.PriceManager;
-import com.alex.puiu.binancecryptotool.model.PriceManagerFixPeriod;
-import com.alex.puiu.binancecryptotool.util.RecordDuration;
-import org.springframework.beans.factory.annotation.Value;
+import com.alex.puiu.binancecryptotool.util.PriceUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PriceManagerServiceImpl implements PriceManagerService {
 
     private final PriceManager priceManager;
+    private final PriceUtils priceUtils;
 
-    public PriceManagerServiceImpl(@Value("${}") int intervalMinutes, @Value("${}") RecordDuration recordDuration) {
-        this.priceManager = new PriceManagerFixPeriod(intervalMinutes, recordDuration);
+    @Autowired
+    public PriceManagerServiceImpl(PriceUtils priceUtils, PriceManager priceManager) {
+        this.priceManager = priceManager;
+        this.priceUtils = priceUtils;
     }
 
     @Override
     public void addPrice(Price price) {
-        Price deletedPrice = null;
+        Price deletedPrice;
         if (this.priceManager.getPriceDeque().size() > this.priceManager.getMaximumCollectionLength()) {
             deletedPrice = this.priceManager.getPriceDeque().pop();
             this.priceManager.getPriceDeque().offer(price);
@@ -26,7 +28,7 @@ public class PriceManagerServiceImpl implements PriceManagerService {
             return;
         }
         this.priceManager.getPriceDeque().offer(price);
-        this.updatePrices(price, deletedPrice);
+        this.updatePrices(price, null);
     }
 
     @Override
@@ -37,34 +39,31 @@ public class PriceManagerServiceImpl implements PriceManagerService {
         updateIndicators(price);
     }
 
-    private void updateLowestPrice(Price price, Price deletedPrice) {
+    public boolean updateLowestPrice(Price price, Price deletedPrice) {
         if (this.priceManager.getLowestPrice().getValue().compareTo(price.getValue()) < 0) {
             this.priceManager.setLowestPrice(price);
-            return;
+            return true;
         }
         if (deletedPrice != null && deletedPrice.getTime().plusDays(1).isBefore(price.getTime())) {
-            this.priceManager.setLowestPrice(this.findNewLowestPrice());
+            this.priceManager.setLowestPrice(this.priceUtils.findNewLowestPrice(this.priceManager.getPriceDeque()));
+            return true;
         }
+        return false;
     }
 
-    private Price findNewLowestPrice() {
-        return this.priceManager
-                .getPriceDeque()
-                .stream()
-                .min((p1, p2) -> p2.getValue().compareTo(p1.getValue()))
-                .orElseThrow(IllegalStateException::new);
+    public boolean updateHighestPrice(Price price) {
+
+        return false;
     }
 
-    private void updateHighestPrice(Price price) {
+    public boolean updateLatestPrice(Price price) {
 
+        return false;
     }
 
-    private void updateLatestPrice(Price price) {
+    public boolean updateIndicators(Price price) {
 
-    }
-
-    private void updateIndicators(Price price) {
-
+        return false;
     }
 
 //    @Override
