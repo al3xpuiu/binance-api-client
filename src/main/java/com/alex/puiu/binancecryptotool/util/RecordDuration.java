@@ -8,9 +8,14 @@ public enum RecordDuration {
 
     private final int value;
     private final int totalMinutes;
+    private final int totalDays;
 
     RecordDuration(int valueHours) {
         this.value = valueHours;
         this.totalMinutes = 60 * valueHours;
+        if (valueHours % 24 != 0) {
+            throw new IllegalArgumentException("The number of hours given, but be perfectly dividable by the number of hours in a day: 24");
+        }
+        this.totalDays = valueHours / 24;
     }
 }

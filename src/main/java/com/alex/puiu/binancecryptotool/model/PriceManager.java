@@ -1,5 +1,6 @@
 package com.alex.puiu.binancecryptotool.model;
 
+import com.alex.puiu.binancecryptotool.util.RecordDuration;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,4 +20,5 @@ public abstract class PriceManager {
 
     public abstract Deque<Price> getPriceDeque();
     public abstract int getMaximumCollectionLength();
+    public abstract RecordDuration getRecordDuration();
 }
