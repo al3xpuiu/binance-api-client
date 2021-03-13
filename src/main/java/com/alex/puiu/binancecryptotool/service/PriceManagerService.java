@@ -8,7 +8,11 @@ public interface PriceManagerService {
 
     void updatePrices(Price price, Price deletedPrice);
 
-//    Action symbolSold();
-//
-//    Action symbolBought();
+    boolean updateLowestPrice(Price price, Price deletedPrice);
+
+    boolean updateHighestPrice(Price price);
+
+    boolean updateLatestPrice(Price price);
+
+    boolean updateIndicators(Price price);
 }

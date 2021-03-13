@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 public class PriceManagerServiceImpl implements PriceManagerService {
 
     private final PriceManager priceManager;
+
+
     private final PriceUtils priceUtils;
 
     @Autowired
@@ -21,7 +23,7 @@ public class PriceManagerServiceImpl implements PriceManagerService {
     @Override
     public void addPrice(Price price) {
         Price deletedPrice;
-        if (this.priceManager.getPriceDeque().size() > this.priceManager.getMaximumCollectionLength()) {
+        if (this.priceManager.getPriceDeque().size() >= this.priceManager.getMaximumCollectionLength()) {
             deletedPrice = this.priceManager.getPriceDeque().pop();
             this.priceManager.getPriceDeque().offer(price);
             this.updatePrices(price, deletedPrice);
@@ -66,21 +68,4 @@ public class PriceManagerServiceImpl implements PriceManagerService {
         return false;
     }
 
-//    @Override
-//    public Action symbolSold() {
-//
-//        Action newObjective = Action.BUY;
-//        this.priceManager.setCurrentObjective(newObjective);
-//
-//        return newObjective;
-//    }
-//
-//    @Override
-//    public Action symbolBought() {
-//
-//        Action newObjective = Action.SELL;
-//        this.priceManager.setCurrentObjective(newObjective);
-//
-//        return newObjective;
-//    }
 }
