@@ -1,0 +1,6 @@
+package com.alex.puiu.binancecryptotool.message;
+
+public class PriceErrorMessage {
+    public static final String VALUE_ERROR = "Price value assertion failed";
+    public static final String DATE_ERROR = "Date value assertion failed";
+}

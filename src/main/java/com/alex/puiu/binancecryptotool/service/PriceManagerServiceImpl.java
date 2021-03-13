@@ -44,7 +44,7 @@ public class PriceManagerServiceImpl implements PriceManagerService {
             this.priceManager.setLowestPrice(price);
             return true;
         }
-        if (deletedPrice != null && deletedPrice.getTime().plusDays(this.priceManager.getRecordDuration().getTotalDays()).isBefore(price.getTime())) {
+        if (deletedPrice != null && deletedPrice.getTime()+ this.priceManager.getRecordDuration().getMillis() < price.getTime()) {
             this.priceManager.setLowestPrice(this.priceUtils.findNewLowestPrice(this.priceManager.getPriceDeque()));
             return true;
         }

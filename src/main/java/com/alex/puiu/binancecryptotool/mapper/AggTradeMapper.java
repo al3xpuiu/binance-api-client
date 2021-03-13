@@ -24,11 +24,11 @@ public interface AggTradeMapper {
 
     @Named("priceToBigDecimal")
     default BigDecimal priceToBigDecimal(String price) {
-        return BigDecimal.valueOf(Double.parseDouble(price));
+        return new BigDecimal(price);
     }
 
     @Named("quantityToBigDecimal")
     default BigDecimal quantityToBigDecimal(String quantity) {
-        return BigDecimal.valueOf(Double.parseDouble(quantity));
+        return new BigDecimal(quantity);
     }
 }

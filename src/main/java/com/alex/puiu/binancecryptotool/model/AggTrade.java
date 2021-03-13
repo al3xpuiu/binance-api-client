@@ -15,4 +15,8 @@ public class AggTrade implements Serializable {
     private long tradeTime;
     private boolean isBuyerMaker;
 
+    public AggTrade() {
+        this.price = BigDecimal.ZERO;
+        this.quantity = BigDecimal.ZERO;
+    }
 }

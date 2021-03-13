@@ -49,7 +49,7 @@ public class Currency {
                     this.quantity = this.quantity.subtract(transaction.getQuantity());
                     this.value = this.value.subtract(transaction.getValue());
             }
-            this.valueProUnit = this.value.divide(this.quantity, RoundingMode.CEILING);
+            this.valueProUnit = this.value.divide(this.quantity,8, RoundingMode.CEILING);
         }
     }
 }
