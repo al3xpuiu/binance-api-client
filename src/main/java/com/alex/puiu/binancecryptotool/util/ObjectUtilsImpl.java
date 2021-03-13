@@ -40,7 +40,9 @@ public class ObjectUtilsImpl<T> implements ObjectUtils<T> {
                 T object = (T) objectInput.readObject();
                 objects.add(object);
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (EOFException e) {
+             // normal to be empty
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
         return objects;
