@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class BinanceCryptoToolConfig {
 
     @Bean
-    public PriceManager fixPeriodPriceManager(@Value("${}") int intervalMinutes, @Value("${}") RecordDuration recordDuration) {
+    public PriceManager fixPeriodPriceManager(@Value("${interval_prices_duration}") int intervalMinutes, @Value("${length_of_recorder_time}") RecordDuration recordDuration) {
         return new PriceManagerFixPeriod(intervalMinutes, recordDuration);
     }
 }
