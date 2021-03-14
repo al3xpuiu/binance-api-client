@@ -218,9 +218,15 @@ class PriceManagerServiceImplTest {
 
     @Test
     void updateLatestPrice() {
-    }
+        //given
+        Price price = new Price();
+        price.setValue(PRICE_VALUE_ONE);
+        price.setTime(new Date().getTime());
+        //when
+        boolean result = this.priceManagerService.updateLatestPrice(price);
 
-    @Test
-    void updateIndicators() {
+        //then
+        Assertions.assertTrue(result, BOOLEAN_ERROR);
+        Assertions.assertEquals(price, this.priceManager.getLatestPrice(),VALUE_ERROR);
     }
 }

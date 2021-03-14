@@ -29,4 +29,12 @@ public class Price {
     public int hashCode() {
         return Objects.hash(value, time);
     }
+
+    @Override
+    public String toString() {
+        return "Price{" +
+                "value=" + value +
+                ", time=" + time +
+                '}';
+    }
 }

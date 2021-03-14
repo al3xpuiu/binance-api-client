@@ -3,7 +3,6 @@ package com.alex.puiu.binancecryptotool.service;
 import com.alex.puiu.binancecryptotool.model.Price;
 import com.alex.puiu.binancecryptotool.model.PriceManager;
 import com.alex.puiu.binancecryptotool.util.PriceUtils;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +38,6 @@ public class PriceManagerServiceImpl implements PriceManagerService {
         updateLowestPrice(price, deletedPrice);
         updateHighestPrice(price, deletedPrice);
         updateLatestPrice(price);
-        updateIndicators(price);
     }
 
     @Override
@@ -70,14 +68,10 @@ public class PriceManagerServiceImpl implements PriceManagerService {
 
     @Override
     public boolean updateLatestPrice(Price price) {
-
+        if (price != null) {
+            this.priceManager.setLatestPrice(price);
+            return true;
+        }
         return false;
     }
-
-    @Override
-    public boolean updateIndicators(Price price) {
-
-        throw new NotImplementedException();
-    }
-
 }

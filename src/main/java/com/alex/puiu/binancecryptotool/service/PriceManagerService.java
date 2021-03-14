@@ -14,5 +14,4 @@ public interface PriceManagerService {
 
     boolean updateLatestPrice(Price price);
 
-    boolean updateIndicators(Price price);
 }
