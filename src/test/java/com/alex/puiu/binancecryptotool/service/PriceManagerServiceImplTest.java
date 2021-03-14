@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -31,14 +32,17 @@ class PriceManagerServiceImplTest {
     private static final BigDecimal PRICE_VALUE = BigDecimal.ONE;
     private static final BigDecimal LOWEST_PRICE_VALUE = new BigDecimal("0.00000001");
     private static final BigDecimal HIGHEST_PRICE_VALUE = new BigDecimal("9999999999");
+
     @Mock
     private PriceUtils priceUtils;
 
     private static final String SERIALIZED_AGG_TRADES_PATH = "src/main/resources/static/aggTrades.txt";
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
         this.priceManagerService = new PriceManagerServiceImpl(this.priceUtils, this.priceManager);
         this.objectUtils = new ObjectUtilsImpl<>();
+
         List<AggTrade> trades = this.objectUtils.readObjectsFromFile(new File(SERIALIZED_AGG_TRADES_PATH));
         Deque<Price> priceDeque = priceManager.getPriceDeque();
         trades
@@ -104,6 +108,50 @@ class PriceManagerServiceImplTest {
         Assertions.assertTrue(result, BOOLEAN_ERROR);
         Assertions.assertEquals(price, this.priceManager.getLowestPrice(),VALUE_ERROR);
 
+    }
+
+    @Test
+    void updateLowestPriceWhenCurrentLowestPriceWasDeletedFromTheQueue() {
+        //given
+        Price deletedPrice = new Price();
+        deletedPrice.setValue(LOWEST_PRICE_VALUE);
+        deletedPrice.setTime(new Date().getTime());
+        this.priceManager.setLowestPrice(deletedPrice);
+
+        Price newLowestPrice = new Price();
+        newLowestPrice.setValue(PRICE_VALUE);
+        newLowestPrice.setTime(new Date().getTime());
+
+        //when
+        Mockito.when(this.priceUtils.findNewLowestPrice(Mockito.any())).thenReturn(newLowestPrice);
+        boolean result = this.priceManagerService.updateLowestPrice(null, deletedPrice);
+
+        //then
+        Assertions.assertTrue(result, BOOLEAN_ERROR);
+        Assertions.assertEquals(newLowestPrice, this.priceManager.getLowestPrice(),VALUE_ERROR);
+
+    }
+
+    @Test
+    void updateLowestPriceLowestPriceWasNotUpdated() {
+        //given
+        Price deletedPrice = new Price();
+        deletedPrice.setValue(PRICE_VALUE);
+        deletedPrice.setTime(new Date().getTime());
+        Price lowestPrice = this.priceManager.getPriceDeque().peek();
+        this.priceManager.setLowestPrice(lowestPrice);
+
+        Price addedPrice = new Price();
+        addedPrice.setValue(PRICE_VALUE);
+        addedPrice.setTime(new Date().getTime());
+
+        //when
+        boolean result = this.priceManagerService.updateLowestPrice(addedPrice, deletedPrice);
+
+        //then
+        Assertions.assertFalse(result, BOOLEAN_ERROR);
+        Assertions.assertNotEquals(addedPrice, this.priceManager.getLowestPrice(),VALUE_ERROR);
+        Assertions.assertEquals(lowestPrice, this.priceManager.getLowestPrice(),VALUE_ERROR);
     }
 
     @Test

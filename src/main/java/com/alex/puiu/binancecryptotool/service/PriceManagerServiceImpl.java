@@ -42,11 +42,11 @@ public class PriceManagerServiceImpl implements PriceManagerService {
     }
 
     public boolean updateLowestPrice(Price price, Price deletedPrice) {
-        if (this.priceManager.getLowestPrice().getValue().compareTo(price.getValue()) > 0) {
+        if (price != null && this.priceManager.getLowestPrice().getValue().compareTo(price.getValue()) > 0) {
             this.priceManager.setLowestPrice(price);
             return true;
         }
-        if (deletedPrice != null && deletedPrice.getTime() + this.priceManager.getRecordDuration().getMillis() < price.getTime()) {
+        if (deletedPrice != null && deletedPrice.equals(this.priceManager.getLowestPrice())) {
             this.priceManager.setLowestPrice(this.priceUtils.findNewLowestPrice(this.priceManager.getPriceDeque()));
             return true;
         }
