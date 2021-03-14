@@ -10,7 +10,7 @@ public interface PriceManagerService {
 
     boolean updateLowestPrice(Price price, Price deletedPrice);
 
-    boolean updateHighestPrice(Price price);
+    boolean updateHighestPrice(Price price, Price deletedPrice);
 
     boolean updateLatestPrice(Price price);
 

@@ -6,4 +6,5 @@ import java.util.Collection;
 
 public interface PriceUtils {
     Price findNewLowestPrice(Collection<Price> priceCollection);
+    Price findNewHighestPrice(Collection<Price> priceCollection);
 }

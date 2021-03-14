@@ -28,7 +28,8 @@ class PriceManagerServiceImplTest {
 
     private PriceManagerService priceManagerService;
     private final PriceManager priceManager = new PriceManagerFixPeriod(240, RecordDuration.TWENTY_FOUR_HOURS);
-    private static final BigDecimal PRICE_VALUE = BigDecimal.ONE;
+    private static final BigDecimal PRICE_VALUE_ZERO = BigDecimal.ZERO;
+    private static final BigDecimal PRICE_VALUE_ONE = BigDecimal.ONE;
     private static final BigDecimal LOWEST_PRICE_VALUE = new BigDecimal("0.00000001");
     private static final BigDecimal HIGHEST_PRICE_VALUE = new BigDecimal("9999999999");
 
@@ -54,7 +55,7 @@ class PriceManagerServiceImplTest {
     void addPriceWhenQueueIsFull() {
         //Given
         Price price = new Price();
-        price.setValue(PRICE_VALUE);
+        price.setValue(PRICE_VALUE_ONE);
         price.setTime(new Date().getTime());
         PriceManagerService spiedService = Mockito.spy(priceManagerService);
 
@@ -72,7 +73,7 @@ class PriceManagerServiceImplTest {
     void addPriceWhenQueueIsNotFull() {
         //Given
         Price price = new Price();
-        price.setValue(PRICE_VALUE);
+        price.setValue(PRICE_VALUE_ONE);
         price.setTime(new Date().getTime());
         PriceManagerService spiedService = Mockito.spy(priceManagerService);
         this.priceManager.getPriceDeque().pop();
@@ -113,12 +114,12 @@ class PriceManagerServiceImplTest {
     void updateLowestPriceWhenCurrentLowestPriceWasDeletedFromTheQueue() {
         //given
         Price deletedPrice = new Price();
-        deletedPrice.setValue(LOWEST_PRICE_VALUE);
+        deletedPrice.setValue(PRICE_VALUE_ONE);
         deletedPrice.setTime(new Date().getTime());
         this.priceManager.setLowestPrice(deletedPrice);
 
         Price newLowestPrice = new Price();
-        newLowestPrice.setValue(PRICE_VALUE);
+        newLowestPrice.setValue(LOWEST_PRICE_VALUE);
         newLowestPrice.setTime(new Date().getTime());
 
         //when
@@ -135,13 +136,13 @@ class PriceManagerServiceImplTest {
     void updateLowestPriceLowestPriceWasNotUpdated() {
         //given
         Price deletedPrice = new Price();
-        deletedPrice.setValue(PRICE_VALUE);
+        deletedPrice.setValue(PRICE_VALUE_ONE);
         deletedPrice.setTime(new Date().getTime());
         Price lowestPrice = this.priceManager.getPriceDeque().peek();
         this.priceManager.setLowestPrice(lowestPrice);
 
         Price addedPrice = new Price();
-        addedPrice.setValue(PRICE_VALUE);
+        addedPrice.setValue(PRICE_VALUE_ONE);
         addedPrice.setTime(new Date().getTime());
 
         //when
@@ -154,7 +155,65 @@ class PriceManagerServiceImplTest {
     }
 
     @Test
-    void updateHighestPrice() {
+    void updateHighestPriceWhenNewPriceIsHigherThenTheCurrentHighestPrice() {
+        //given
+        Price price = new Price();
+        price.setValue(HIGHEST_PRICE_VALUE);
+        price.setTime(new Date().getTime());
+        this.priceManager.getPriceDeque().offer(price);
+        this.priceManager.setHighestPrice(this.priceManager.getPriceDeque().peek());
+
+        //when
+        boolean result = this.priceManagerService.updateHighestPrice(price, null);
+
+        //then
+        Assertions.assertTrue(result, BOOLEAN_ERROR);
+        Assertions.assertEquals(price, this.priceManager.getHighestPrice(),VALUE_ERROR);
+
+    }
+
+    @Test
+    void updateHighestPriceWhenCurrentHighestPriceWasDeletedFromTheQueue() {
+        //given
+        Price deletedPrice = new Price();
+        deletedPrice.setValue(PRICE_VALUE_ONE);
+        deletedPrice.setTime(new Date().getTime());
+        this.priceManager.setHighestPrice(deletedPrice);
+
+        Price newHighestPrice = new Price();
+        newHighestPrice.setValue(HIGHEST_PRICE_VALUE);
+        newHighestPrice.setTime(new Date().getTime());
+
+        //when
+        Mockito.when(this.priceUtils.findNewHighestPrice(Mockito.any())).thenReturn(newHighestPrice);
+        boolean result = this.priceManagerService.updateHighestPrice(null, deletedPrice);
+
+        //then
+        Assertions.assertTrue(result, BOOLEAN_ERROR);
+        Assertions.assertEquals(newHighestPrice, this.priceManager.getHighestPrice(),VALUE_ERROR);
+
+    }
+
+    @Test
+    void updateHighestPriceHighestPriceWasNotUpdated() {
+        //given
+        Price deletedPrice = new Price();
+        deletedPrice.setValue(PRICE_VALUE_ZERO);
+        deletedPrice.setTime(new Date().getTime());
+        Price highestPrice = this.priceManager.getPriceDeque().peek();
+        this.priceManager.setHighestPrice(highestPrice);
+
+        Price addedPrice = new Price();
+        addedPrice.setValue(PRICE_VALUE_ZERO);
+        addedPrice.setTime(new Date().getTime());
+
+        //when
+        boolean result = this.priceManagerService.updateHighestPrice(addedPrice, deletedPrice);
+
+        //then
+        Assertions.assertFalse(result, BOOLEAN_ERROR);
+        Assertions.assertNotEquals(addedPrice, this.priceManager.getHighestPrice(),VALUE_ERROR);
+        Assertions.assertEquals(highestPrice, this.priceManager.getHighestPrice(),VALUE_ERROR);
     }
 
     @Test
