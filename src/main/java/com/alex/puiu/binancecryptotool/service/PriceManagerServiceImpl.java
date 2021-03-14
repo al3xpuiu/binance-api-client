@@ -42,11 +42,11 @@ public class PriceManagerServiceImpl implements PriceManagerService {
     }
 
     public boolean updateLowestPrice(Price price, Price deletedPrice) {
-        if (this.priceManager.getLowestPrice().getValue().compareTo(price.getValue()) < 0) {
+        if (this.priceManager.getLowestPrice().getValue().compareTo(price.getValue()) > 0) {
             this.priceManager.setLowestPrice(price);
             return true;
         }
-        if (deletedPrice != null && deletedPrice.getTime()+ this.priceManager.getRecordDuration().getMillis() < price.getTime()) {
+        if (deletedPrice != null && deletedPrice.getTime() + this.priceManager.getRecordDuration().getMillis() < price.getTime()) {
             this.priceManager.setLowestPrice(this.priceUtils.findNewLowestPrice(this.priceManager.getPriceDeque()));
             return true;
         }
@@ -54,7 +54,6 @@ public class PriceManagerServiceImpl implements PriceManagerService {
     }
 
     public boolean updateHighestPrice(Price price) {
-
         return false;
     }
 
