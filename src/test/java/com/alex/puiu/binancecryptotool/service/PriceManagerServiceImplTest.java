@@ -27,7 +27,6 @@ import static com.alex.puiu.binancecryptotool.message.PriceErrorMessage.*;
 class PriceManagerServiceImplTest {
 
     private PriceManagerService priceManagerService;
-    private ObjectUtils<AggTrade> objectUtils;
     private final PriceManager priceManager = new PriceManagerFixPeriod(240, RecordDuration.TWENTY_FOUR_HOURS);
     private static final BigDecimal PRICE_VALUE = BigDecimal.ONE;
     private static final BigDecimal LOWEST_PRICE_VALUE = new BigDecimal("0.00000001");
@@ -41,9 +40,9 @@ class PriceManagerServiceImplTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         this.priceManagerService = new PriceManagerServiceImpl(this.priceUtils, this.priceManager);
-        this.objectUtils = new ObjectUtilsImpl<>();
+        ObjectUtils<AggTrade> objectUtils = new ObjectUtilsImpl<>();
 
-        List<AggTrade> trades = this.objectUtils.readObjectsFromFile(new File(SERIALIZED_AGG_TRADES_PATH));
+        List<AggTrade> trades = objectUtils.readObjectsFromFile(new File(SERIALIZED_AGG_TRADES_PATH));
         Deque<Price> priceDeque = priceManager.getPriceDeque();
         trades
                 .stream()
