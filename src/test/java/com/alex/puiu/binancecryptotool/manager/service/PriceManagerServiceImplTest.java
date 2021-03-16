@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.Deque;
 import java.util.List;
 
+import static com.alex.puiu.binancecryptotool.message.Path.SERIALIZED_AGG_TRADES_PATH;
 import static com.alex.puiu.binancecryptotool.message.PriceErrorMessage.*;
 
 class PriceManagerServiceImplTest {
@@ -36,7 +37,6 @@ class PriceManagerServiceImplTest {
     @Mock
     private PriceUtils priceUtils;
 
-    private static final String SERIALIZED_AGG_TRADES_PATH = "src/main/resources/static/aggTrades.txt";
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -86,10 +86,6 @@ class PriceManagerServiceImplTest {
         //Then
         Assertions.assertEquals(insertedElement.getValue(), price.getValue(), VALUE_ERROR);
         Assertions.assertEquals(insertedElement.getTime(), price.getTime(), DATE_ERROR);
-    }
-
-    @Test
-    void updatePrices() {
     }
 
     @Test
