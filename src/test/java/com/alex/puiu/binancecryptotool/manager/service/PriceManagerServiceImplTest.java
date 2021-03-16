@@ -1,14 +1,14 @@
-package com.alex.puiu.binancecryptotool.service;
+package com.alex.puiu.binancecryptotool.manager.service;
 
-import com.alex.puiu.binancecryptotool.mapper.PriceMapper;
-import com.alex.puiu.binancecryptotool.model.AggTrade;
-import com.alex.puiu.binancecryptotool.model.Price;
-import com.alex.puiu.binancecryptotool.model.PriceManager;
-import com.alex.puiu.binancecryptotool.model.PriceManagerFixPeriod;
+import com.alex.puiu.binancecryptotool.manager.mapper.PriceMapper;
+import com.alex.puiu.binancecryptotool.manager.model.AggTrade;
+import com.alex.puiu.binancecryptotool.manager.model.Price;
+import com.alex.puiu.binancecryptotool.manager.model.PriceManager;
+import com.alex.puiu.binancecryptotool.manager.model.PriceManagerFixPeriod;
+import com.alex.puiu.binancecryptotool.manager.util.PriceUtils;
+import com.alex.puiu.binancecryptotool.manager.util.RecordDuration;
 import com.alex.puiu.binancecryptotool.util.ObjectUtils;
 import com.alex.puiu.binancecryptotool.util.ObjectUtilsImpl;
-import com.alex.puiu.binancecryptotool.util.PriceUtils;
-import com.alex.puiu.binancecryptotool.util.RecordDuration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

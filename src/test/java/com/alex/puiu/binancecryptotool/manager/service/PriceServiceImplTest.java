@@ -1,8 +1,8 @@
-package com.alex.puiu.binancecryptotool.service;
+package com.alex.puiu.binancecryptotool.manager.service;
 
+import com.alex.puiu.binancecryptotool.manager.model.AggTrade;
+import com.alex.puiu.binancecryptotool.manager.model.Price;
 import com.alex.puiu.binancecryptotool.message.PriceErrorMessage;
-import com.alex.puiu.binancecryptotool.model.AggTrade;
-import com.alex.puiu.binancecryptotool.model.Price;
 import com.alex.puiu.binancecryptotool.util.ObjectUtils;
 import com.alex.puiu.binancecryptotool.util.ObjectUtilsImpl;
 import org.junit.jupiter.api.Assertions;

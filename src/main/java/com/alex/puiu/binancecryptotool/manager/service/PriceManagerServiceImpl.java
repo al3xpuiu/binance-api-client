@@ -1,8 +1,8 @@
-package com.alex.puiu.binancecryptotool.service;
+package com.alex.puiu.binancecryptotool.manager.service;
 
-import com.alex.puiu.binancecryptotool.model.Price;
-import com.alex.puiu.binancecryptotool.model.PriceManager;
-import com.alex.puiu.binancecryptotool.util.PriceUtils;
+import com.alex.puiu.binancecryptotool.manager.model.Price;
+import com.alex.puiu.binancecryptotool.manager.model.PriceManager;
+import com.alex.puiu.binancecryptotool.manager.util.PriceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

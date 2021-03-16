@@ -1,6 +1,6 @@
 package com.alex.puiu.binancecryptotool;
 
-import com.alex.puiu.binancecryptotool.mapper.AggTradeMapper;
+import com.alex.puiu.binancecryptotool.manager.mapper.AggTradeMapper;
 import com.alex.puiu.binancecryptotool.util.ObjectUtils;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
@@ -19,7 +19,7 @@ public class BinanceCryptoToolApplication {
     public static void main(String[] args) {
         ApplicationContext applicationContext = SpringApplication.run(BinanceCryptoToolApplication.class, args);
 
-        ObjectUtils<com.alex.puiu.binancecryptotool.model.AggTrade> objectUtils = (ObjectUtils) applicationContext.getBean("objectUtilsImpl");
+        ObjectUtils<com.alex.puiu.binancecryptotool.manager.model.AggTrade> objectUtils = (ObjectUtils) applicationContext.getBean("objectUtilsImpl");
         BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance("API-KEY", "SECRET");
         BinanceApiRestClient client = factory.newRestClient();
 
@@ -31,7 +31,7 @@ public class BinanceCryptoToolApplication {
 
 //        List<Candlestick> candlesticks = client.getCandlestickBars("ADAEUR", CandlestickInterval.ONE_MINUTE, 1000, null, null);
         List<AggTrade> aggTrades = client.getAggTrades("ADAEUR", null, 1000, null, null);
-        List<com.alex.puiu.binancecryptotool.model.AggTrade> trades = AggTradeMapper.INSTANCE.toAppAggTrades(aggTrades);
+        List<com.alex.puiu.binancecryptotool.manager.model.AggTrade> trades = AggTradeMapper.INSTANCE.toAppAggTrades(aggTrades);
 
 //        System.out.println(candlesticks);
         File file = new File("src/main/resources/static/aggTrades.txt");

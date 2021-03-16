@@ -1,6 +1,6 @@
-package com.alex.puiu.binancecryptotool.model;
+package com.alex.puiu.binancecryptotool.manager.model;
 
-import com.alex.puiu.binancecryptotool.util.RecordDuration;
+import com.alex.puiu.binancecryptotool.manager.util.RecordDuration;
 import lombok.Getter;
 import lombok.Setter;
 

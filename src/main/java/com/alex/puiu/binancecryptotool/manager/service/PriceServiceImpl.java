@@ -1,8 +1,8 @@
-package com.alex.puiu.binancecryptotool.service;
+package com.alex.puiu.binancecryptotool.manager.service;
 
-import com.alex.puiu.binancecryptotool.mapper.PriceMapper;
-import com.alex.puiu.binancecryptotool.model.AggTrade;
-import com.alex.puiu.binancecryptotool.model.Price;
+import com.alex.puiu.binancecryptotool.manager.mapper.PriceMapper;
+import com.alex.puiu.binancecryptotool.manager.model.AggTrade;
+import com.alex.puiu.binancecryptotool.manager.model.Price;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

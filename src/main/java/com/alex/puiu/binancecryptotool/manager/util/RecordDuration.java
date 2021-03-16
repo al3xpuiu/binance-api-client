@@ -1,4 +1,4 @@
-package com.alex.puiu.binancecryptotool.util;
+package com.alex.puiu.binancecryptotool.manager.util;
 
 import lombok.Getter;
 

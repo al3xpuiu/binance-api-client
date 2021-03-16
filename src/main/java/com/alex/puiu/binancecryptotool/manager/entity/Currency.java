@@ -1,4 +1,4 @@
-package com.alex.puiu.binancecryptotool.entity;
+package com.alex.puiu.binancecryptotool.manager.entity;
 
 import com.alex.puiu.binancecryptotool.util.Action;
 import lombok.Getter;

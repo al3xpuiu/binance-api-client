@@ -1,6 +1,6 @@
-package com.alex.puiu.binancecryptotool.util;
+package com.alex.puiu.binancecryptotool.manager.util;
 
-import com.alex.puiu.binancecryptotool.model.Price;
+import com.alex.puiu.binancecryptotool.manager.model.Price;
 
 import java.util.Collection;
 

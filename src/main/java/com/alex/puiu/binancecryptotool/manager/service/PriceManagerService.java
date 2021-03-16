@@ -1,6 +1,6 @@
-package com.alex.puiu.binancecryptotool.service;
+package com.alex.puiu.binancecryptotool.manager.service;
 
-import com.alex.puiu.binancecryptotool.model.Price;
+import com.alex.puiu.binancecryptotool.manager.model.Price;
 
 public interface PriceManagerService {
 

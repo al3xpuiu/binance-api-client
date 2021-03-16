@@ -1,8 +1,8 @@
-package com.alex.puiu.binancecryptotool.config;
+package com.alex.puiu.binancecryptotool.manager.config;
 
-import com.alex.puiu.binancecryptotool.model.PriceManager;
-import com.alex.puiu.binancecryptotool.model.PriceManagerFixPeriod;
-import com.alex.puiu.binancecryptotool.util.RecordDuration;
+import com.alex.puiu.binancecryptotool.manager.model.PriceManager;
+import com.alex.puiu.binancecryptotool.manager.model.PriceManagerFixPeriod;
+import com.alex.puiu.binancecryptotool.manager.util.RecordDuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

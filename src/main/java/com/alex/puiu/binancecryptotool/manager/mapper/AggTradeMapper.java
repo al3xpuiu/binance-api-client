@@ -1,6 +1,6 @@
-package com.alex.puiu.binancecryptotool.mapper;
+package com.alex.puiu.binancecryptotool.manager.mapper;
 
-import com.alex.puiu.binancecryptotool.model.AggTrade;
+import com.alex.puiu.binancecryptotool.manager.model.AggTrade;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
