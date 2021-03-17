@@ -55,7 +55,7 @@ public class PriceManagerServiceImpl implements PriceManagerService {
     @Override
     public boolean updateLowestPrice(Price price, Price deletedPrice) {
         Price currentLowestPrice = this.priceManager.getLowestPrice();
-        if (currentLowestPrice == null || price != null && currentLowestPrice.getValue().compareTo(price.getValue()) > 0) {
+        if (currentLowestPrice == null || price != null && currentLowestPrice.getClose().compareTo(price.getClose()) > 0) {
             this.priceManager.setLowestPrice(price);
             return true;
         }
@@ -69,7 +69,7 @@ public class PriceManagerServiceImpl implements PriceManagerService {
     @Override
     public boolean updateHighestPrice(Price price, Price deletedPrice) {
         Price currentHighestPrice = this.priceManager.getHighestPrice();
-        if (currentHighestPrice == null || price != null && currentHighestPrice.getValue().compareTo(price.getValue()) < 0) {
+        if (currentHighestPrice == null || price != null && currentHighestPrice.getClose().compareTo(price.getClose()) < 0) {
             this.priceManager.setHighestPrice(price);
             return true;
         }

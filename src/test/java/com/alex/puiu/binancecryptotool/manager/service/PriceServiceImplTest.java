@@ -63,6 +63,6 @@ class PriceServiceImplTest {
         Price price = this.priceService.averageTrade(this.aggTrades);
 
         //then
-        Assertions.assertEquals(EXPECTED_PRICE, price.getValue(), PriceErrorMessage.VALUE_ERROR);
+        Assertions.assertEquals(EXPECTED_PRICE, price.getClose(), PriceErrorMessage.VALUE_ERROR);
     }
 }

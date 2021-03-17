@@ -13,8 +13,8 @@ public interface PriceMapper {
     PriceMapper INSTANCE = Mappers.getMapper(PriceMapper.class);
 
     @Mappings({
-            @Mapping(target = "value", source = "price"),
-            @Mapping(target = "time", source = "tradeTime")
+            @Mapping(target = "close", source = "price"),
+            @Mapping(target = "closeTime", source = "tradeTime")
     })
     Price aggTradeToPrice(AggTrade aggTrade);
 }

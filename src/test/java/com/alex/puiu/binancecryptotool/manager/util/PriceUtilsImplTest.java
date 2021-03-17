@@ -40,8 +40,8 @@ class PriceUtilsImplTest {
     void findNewLowestPrice() {
         //given
         Price price = new Price();
-        price.setValue(new BigDecimal("0.00001"));
-        price.setTime(new Date().getTime());
+        price.setClose(new BigDecimal("0.00001"));
+        price.setCloseTime(new Date().getTime());
         this.priceDeque.offer(price);
 
         //when
@@ -56,8 +56,8 @@ class PriceUtilsImplTest {
     void findNewHighestPrice() {
         //given
         Price price = new Price();
-        price.setValue(new BigDecimal("99999999"));
-        price.setTime(new Date().getTime());
+        price.setClose(new BigDecimal("99999999"));
+        price.setCloseTime(new Date().getTime());
         this.priceDeque.offer(price);
 
         //when

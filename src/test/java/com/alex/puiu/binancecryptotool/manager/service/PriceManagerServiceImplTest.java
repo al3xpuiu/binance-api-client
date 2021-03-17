@@ -55,8 +55,8 @@ class PriceManagerServiceImplTest {
     void addPriceWhenQueueIsFull() {
         //Given
         Price price = new Price();
-        price.setValue(PRICE_VALUE_ONE);
-        price.setTime(new Date().getTime());
+        price.setClose(PRICE_VALUE_ONE);
+        price.setCloseTime(new Date().getTime());
         PriceManagerService spiedService = Mockito.spy(priceManagerService);
 
         //When
@@ -65,16 +65,16 @@ class PriceManagerServiceImplTest {
         Price insertedElement = this.priceManager.getPriceDeque().getLast();
 
         //Then
-        Assertions.assertEquals(insertedElement.getValue(), price.getValue(), VALUE_ERROR);
-        Assertions.assertEquals(insertedElement.getTime(), price.getTime(), DATE_ERROR);
+        Assertions.assertEquals(insertedElement.getClose(), price.getClose(), VALUE_ERROR);
+        Assertions.assertEquals(insertedElement.getCloseTime(), price.getCloseTime(), DATE_ERROR);
     }
 
     @Test
     void addPriceWhenQueueIsNotFull() {
         //Given
         Price price = new Price();
-        price.setValue(PRICE_VALUE_ONE);
-        price.setTime(new Date().getTime());
+        price.setClose(PRICE_VALUE_ONE);
+        price.setCloseTime(new Date().getTime());
         PriceManagerService spiedService = Mockito.spy(priceManagerService);
         this.priceManager.getPriceDeque().pop();
 
@@ -84,16 +84,16 @@ class PriceManagerServiceImplTest {
         Price insertedElement = this.priceManager.getPriceDeque().getLast();
 
         //Then
-        Assertions.assertEquals(insertedElement.getValue(), price.getValue(), VALUE_ERROR);
-        Assertions.assertEquals(insertedElement.getTime(), price.getTime(), DATE_ERROR);
+        Assertions.assertEquals(insertedElement.getClose(), price.getClose(), VALUE_ERROR);
+        Assertions.assertEquals(insertedElement.getCloseTime(), price.getCloseTime(), DATE_ERROR);
     }
 
     @Test
     void updateLowestPriceWhenNewPriceIsLowerThenTheCurrentLowestPrice() {
         //given
         Price price = new Price();
-        price.setValue(LOWEST_PRICE_VALUE);
-        price.setTime(new Date().getTime());
+        price.setClose(LOWEST_PRICE_VALUE);
+        price.setCloseTime(new Date().getTime());
         this.priceManager.getPriceDeque().offer(price);
         this.priceManager.setLowestPrice(this.priceManager.getPriceDeque().peek());
 
@@ -110,13 +110,13 @@ class PriceManagerServiceImplTest {
     void updateLowestPriceWhenCurrentLowestPriceWasDeletedFromTheQueue() {
         //given
         Price deletedPrice = new Price();
-        deletedPrice.setValue(PRICE_VALUE_ONE);
-        deletedPrice.setTime(new Date().getTime());
+        deletedPrice.setClose(PRICE_VALUE_ONE);
+        deletedPrice.setCloseTime(new Date().getTime());
         this.priceManager.setLowestPrice(deletedPrice);
 
         Price newLowestPrice = new Price();
-        newLowestPrice.setValue(LOWEST_PRICE_VALUE);
-        newLowestPrice.setTime(new Date().getTime());
+        newLowestPrice.setClose(LOWEST_PRICE_VALUE);
+        newLowestPrice.setCloseTime(new Date().getTime());
 
         //when
         Mockito.when(this.priceUtils.findNewLowestPrice(Mockito.any())).thenReturn(newLowestPrice);
@@ -132,14 +132,14 @@ class PriceManagerServiceImplTest {
     void updateLowestPriceLowestPriceWasNotUpdated() {
         //given
         Price deletedPrice = new Price();
-        deletedPrice.setValue(PRICE_VALUE_ONE);
-        deletedPrice.setTime(new Date().getTime());
+        deletedPrice.setClose(PRICE_VALUE_ONE);
+        deletedPrice.setCloseTime(new Date().getTime());
         Price lowestPrice = this.priceManager.getPriceDeque().peek();
         this.priceManager.setLowestPrice(lowestPrice);
 
         Price addedPrice = new Price();
-        addedPrice.setValue(PRICE_VALUE_ONE);
-        addedPrice.setTime(new Date().getTime());
+        addedPrice.setClose(PRICE_VALUE_ONE);
+        addedPrice.setCloseTime(new Date().getTime());
 
         //when
         boolean result = this.priceManagerService.updateLowestPrice(addedPrice, deletedPrice);
@@ -154,8 +154,8 @@ class PriceManagerServiceImplTest {
     void updateHighestPriceWhenNewPriceIsHigherThenTheCurrentHighestPrice() {
         //given
         Price price = new Price();
-        price.setValue(HIGHEST_PRICE_VALUE);
-        price.setTime(new Date().getTime());
+        price.setClose(HIGHEST_PRICE_VALUE);
+        price.setCloseTime(new Date().getTime());
         this.priceManager.getPriceDeque().offer(price);
         this.priceManager.setHighestPrice(this.priceManager.getPriceDeque().peek());
 
@@ -172,13 +172,13 @@ class PriceManagerServiceImplTest {
     void updateHighestPriceWhenCurrentHighestPriceWasDeletedFromTheQueue() {
         //given
         Price deletedPrice = new Price();
-        deletedPrice.setValue(PRICE_VALUE_ONE);
-        deletedPrice.setTime(new Date().getTime());
+        deletedPrice.setClose(PRICE_VALUE_ONE);
+        deletedPrice.setCloseTime(new Date().getTime());
         this.priceManager.setHighestPrice(deletedPrice);
 
         Price newHighestPrice = new Price();
-        newHighestPrice.setValue(HIGHEST_PRICE_VALUE);
-        newHighestPrice.setTime(new Date().getTime());
+        newHighestPrice.setClose(HIGHEST_PRICE_VALUE);
+        newHighestPrice.setCloseTime(new Date().getTime());
 
         //when
         Mockito.when(this.priceUtils.findNewHighestPrice(Mockito.any())).thenReturn(newHighestPrice);
@@ -194,14 +194,14 @@ class PriceManagerServiceImplTest {
     void updateHighestPriceHighestPriceWasNotUpdated() {
         //given
         Price deletedPrice = new Price();
-        deletedPrice.setValue(PRICE_VALUE_ZERO);
-        deletedPrice.setTime(new Date().getTime());
+        deletedPrice.setClose(PRICE_VALUE_ZERO);
+        deletedPrice.setCloseTime(new Date().getTime());
         Price highestPrice = this.priceManager.getPriceDeque().peek();
         this.priceManager.setHighestPrice(highestPrice);
 
         Price addedPrice = new Price();
-        addedPrice.setValue(PRICE_VALUE_ZERO);
-        addedPrice.setTime(new Date().getTime());
+        addedPrice.setClose(PRICE_VALUE_ZERO);
+        addedPrice.setCloseTime(new Date().getTime());
 
         //when
         boolean result = this.priceManagerService.updateHighestPrice(addedPrice, deletedPrice);
@@ -216,8 +216,8 @@ class PriceManagerServiceImplTest {
     void updateLatestPrice() {
         //given
         Price price = new Price();
-        price.setValue(PRICE_VALUE_ONE);
-        price.setTime(new Date().getTime());
+        price.setClose(PRICE_VALUE_ONE);
+        price.setCloseTime(new Date().getTime());
         //when
         boolean result = this.priceManagerService.updateLatestPrice(price);
 

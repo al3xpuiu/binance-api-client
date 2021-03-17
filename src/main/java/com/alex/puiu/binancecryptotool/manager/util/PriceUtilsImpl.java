@@ -13,7 +13,7 @@ public class PriceUtilsImpl implements PriceUtils {
     public Price findNewLowestPrice(Collection<Price> priceCollection) {
         return priceCollection
                 .stream()
-                .min(Comparator.comparing(Price::getValue))
+                .min(Comparator.comparing(Price::getClose))
                 .orElseThrow(IllegalStateException::new);
     }
 
@@ -21,7 +21,7 @@ public class PriceUtilsImpl implements PriceUtils {
     public Price findNewHighestPrice(Collection<Price> priceCollection) {
         return priceCollection
                 .stream()
-                .max(Comparator.comparing(Price::getValue))
+                .max(Comparator.comparing(Price::getClose))
                 .orElseThrow(IllegalStateException::new);
     }
 }

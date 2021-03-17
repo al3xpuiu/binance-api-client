@@ -1,13 +1,9 @@
 package com.alex.puiu.binancecryptotool;
 
-import com.binance.api.client.BinanceApiClientFactory;
-import com.binance.api.client.BinanceApiRestClient;
-import com.binance.api.client.domain.market.AggTrade;
+import com.alex.puiu.binancecryptotool.binanceconnector.service.TradeReader;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-
-import java.util.List;
 
 @SpringBootApplication
 public class BinanceCryptoToolApplication {
@@ -15,12 +11,13 @@ public class BinanceCryptoToolApplication {
     public static void main(String[] args) {
         ApplicationContext applicationContext = SpringApplication.run(BinanceCryptoToolApplication.class, args);
 
-//        TradeReader reader = (TradeReader) applicationContext.getBean("tradeReaderDummyImpl");
+        TradeReader reader = (TradeReader) applicationContext.getBean("tradeReaderDummyImpl");
+        reader.readCandlesticks();
 //
 //        reader.readAggTrades();
 //        ObjectUtils<com.alex.puiu.binancecryptotool.manager.model.AggTrade> objectUtils = (ObjectUtils) applicationContext.getBean("objectUtilsImpl");
-        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance("API-KEY", "SECRET");
-        BinanceApiRestClient client = factory.newRestClient();
+//        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance("API-KEY", "SECRET");
+//        BinanceApiRestClient client = factory.newRestClient();
 //
 //        client.ping();
 //        long serverTime = client.getServerTime();
@@ -28,8 +25,9 @@ public class BinanceCryptoToolApplication {
 //
 //        BinanceApiWebSocketClient webSocketClient = BinanceApiClientFactory.newInstance().newWebSocketClient();
 
-//        List<Candlestick> candlesticks = client.getCandlestickBars("ADAEUR", CandlestickInterval.ONE_MINUTE, 1000, null, null);
-        List<AggTrade> aggTrades = client.getAggTrades("ADAEUR", null, 1000, null, null);
+//        List<Candlestick> candlesticks = client.getCandlestickBars("ADAEUR", CandlestickInterval.FIFTEEN_MINUTES, 1000, null, null);
+//        List<AggTrade> aggTrades = client.getAggTrades("ADAEUR", null, 1000, null, null);
+//        System.out.println(candlesticks);
 //        List<com.alex.puiu.binancecryptotool.manager.model.AggTrade> trades = AggTradeMapper.INSTANCE.toAppAggTrades(aggTrades);
 
 //        System.out.println(candlesticks);
