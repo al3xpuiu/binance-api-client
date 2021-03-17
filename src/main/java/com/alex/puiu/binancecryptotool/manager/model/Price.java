@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Objects;
 
 @Getter
@@ -34,7 +36,7 @@ public class Price {
     public String toString() {
         return "Price{" +
                 "value=" + value +
-                ", time=" + time +
+                ", time=" + LocalDateTime.ofEpochSecond(this.time / 1000, 0, ZoneOffset.UTC) +
                 '}';
     }
 }

@@ -35,18 +35,31 @@ public class PriceManagerServiceImpl implements PriceManagerService {
 
     @Override
     public void updatePrices(Price price, Price deletedPrice) {
-        updateLowestPrice(price, deletedPrice);
-        updateHighestPrice(price, deletedPrice);
         updateLatestPrice(price);
+        boolean lowestPriceChanged = updateLowestPrice(price, deletedPrice);
+        if (lowestPriceChanged) {
+            //TODO communicate with buyer?
+            System.out.println("Lowest Price: " + price);
+            return;
+        }
+        boolean highestPriceChanged = updateHighestPrice(price, deletedPrice);
+        if (highestPriceChanged) {
+            //TODO communicate with seller
+            System.out.println("Highest Price" + price);
+            return;
+        }
+
+        System.out.println("Price " + price);
     }
 
     @Override
     public boolean updateLowestPrice(Price price, Price deletedPrice) {
-        if (price != null && this.priceManager.getLowestPrice().getValue().compareTo(price.getValue()) > 0) {
+        Price currentLowestPrice = this.priceManager.getLowestPrice();
+        if (currentLowestPrice == null || price != null && currentLowestPrice.getValue().compareTo(price.getValue()) > 0) {
             this.priceManager.setLowestPrice(price);
             return true;
         }
-        if (deletedPrice != null && deletedPrice.equals(this.priceManager.getLowestPrice())) {
+        if (deletedPrice != null && deletedPrice.equals(currentLowestPrice)) {
             this.priceManager.setLowestPrice(this.priceUtils.findNewLowestPrice(this.priceManager.getPriceDeque()));
             return true;
         }
@@ -55,11 +68,12 @@ public class PriceManagerServiceImpl implements PriceManagerService {
 
     @Override
     public boolean updateHighestPrice(Price price, Price deletedPrice) {
-        if (price != null && this.priceManager.getHighestPrice().getValue().compareTo(price.getValue()) < 0) {
+        Price currentHighestPrice = this.priceManager.getHighestPrice();
+        if (currentHighestPrice == null || price != null && currentHighestPrice.getValue().compareTo(price.getValue()) < 0) {
             this.priceManager.setHighestPrice(price);
             return true;
         }
-        if (deletedPrice != null && deletedPrice.equals(this.priceManager.getHighestPrice())) {
+        if (deletedPrice != null && deletedPrice.equals(currentHighestPrice)) {
             this.priceManager.setHighestPrice(this.priceUtils.findNewHighestPrice(this.priceManager.getPriceDeque()));
             return true;
         }

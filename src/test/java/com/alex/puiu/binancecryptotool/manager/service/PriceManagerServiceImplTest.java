@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.Deque;
 import java.util.List;
 
-import static com.alex.puiu.binancecryptotool.message.Path.SERIALIZED_AGG_TRADES_PATH;
+import static com.alex.puiu.binancecryptotool.Path.SERIALIZED_AGG_TRADES_PATH;
 import static com.alex.puiu.binancecryptotool.message.PriceErrorMessage.*;
 
 class PriceManagerServiceImplTest {
