@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service()
 @Profile("dummy")
-public class TradeReaderDummyImpl implements TradeReader {
+public class BinanceConnectorDummyImpl implements BinanceConnector {
 
     private final ObjectUtils<AggTrade> aggTradeObjectUtils;
     private final PriceManagerService priceManagerService;
@@ -33,13 +33,13 @@ public class TradeReaderDummyImpl implements TradeReader {
     private final Date from;
 
     @Autowired
-    public TradeReaderDummyImpl(ObjectUtils<AggTrade> aggTradeObjectUtils,
-                                PriceManagerService priceManagerService,
-                                @Value("${dummySerializedAggTradesPath:src/main/resources/static/aggTrades.txt}") String serializedAggTradesPath,
-                                @Value("${dummySymbol}") String symbol,
-                                @Value("${dummyCandlestickInterval}") CandlestickInterval candlestickInterval,
-                                @Value("${dummyLimit}") int limit,
-                                @Value("#{new java.text.SimpleDateFormat('${dateFormat}').parse('${dummyFromDate}')}") Date from) {
+    public BinanceConnectorDummyImpl(ObjectUtils<AggTrade> aggTradeObjectUtils,
+                                     PriceManagerService priceManagerService,
+                                     @Value("${dummySerializedAggTradesPath:src/main/resources/static/aggTrades.txt}") String serializedAggTradesPath,
+                                     @Value("${dummySymbol}") String symbol,
+                                     @Value("${dummyCandlestickInterval}") CandlestickInterval candlestickInterval,
+                                     @Value("${dummyLimit}") int limit,
+                                     @Value("#{new java.text.SimpleDateFormat('${dateFormat}').parse('${dummyFromDate}')}") Date from) {
         this.aggTradeObjectUtils = aggTradeObjectUtils;
         this.priceManagerService = priceManagerService;
         this.serializedAggTradesPath = serializedAggTradesPath;

@@ -1,6 +1,6 @@
 package com.alex.puiu.binancecryptotool;
 
-import com.alex.puiu.binancecryptotool.binanceconnector.service.TradeReader;
+import com.alex.puiu.binancecryptotool.binanceconnector.service.BinanceConnector;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -11,7 +11,7 @@ public class BinanceCryptoToolApplication {
     public static void main(String[] args) {
         ApplicationContext applicationContext = SpringApplication.run(BinanceCryptoToolApplication.class, args);
 
-        TradeReader reader = (TradeReader) applicationContext.getBean("tradeReaderDummyImpl");
+        BinanceConnector reader = (BinanceConnector) applicationContext.getBean("binanceConnectorDummyImpl");
         reader.readCandlesticks();
 //
 //        reader.readAggTrades();

@@ -1,6 +1,6 @@
 package com.alex.puiu.binancecryptotool.binanceconnector.service;
 
-public interface TradeReader {
+public interface BinanceConnector {
 
     void readAggTrades();
     void readCandlesticks();

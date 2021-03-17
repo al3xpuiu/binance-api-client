@@ -3,10 +3,10 @@ package com.alex.puiu.binancecryptotool.binanceconnector.service;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiWebSocketClient;
 
-public class TradeReaderImpl implements TradeReader{
+public class BinanceConnectorImpl implements BinanceConnector {
 
     private final BinanceApiWebSocketClient client;
-    public TradeReaderImpl() {
+    public BinanceConnectorImpl() {
         this.client = BinanceApiClientFactory.newInstance().newWebSocketClient();
     }
 
