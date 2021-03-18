@@ -1,17 +1,17 @@
 package com.alex.puiu.binancecryptotool.manager.service;
 
-import com.alex.puiu.binancecryptotool.manager.model.Price;
+import com.alex.puiu.binancecryptotool.manager.model.Candlestick;
 
 public interface PriceManagerService {
 
-    void addPrice(Price price);
+    void addPrice(Candlestick candlestick);
 
-    void updatePrices(Price price, Price deletedPrice);
+    void updatePrices(Candlestick candlestick, Candlestick deletedCandlestick);
 
-    boolean updateLowestPrice(Price price, Price deletedPrice);
+    boolean updateLowestPrice(Candlestick candlestick, Candlestick deletedCandlestick);
 
-    boolean updateHighestPrice(Price price, Price deletedPrice);
+    boolean updateHighestPrice(Candlestick candlestick, Candlestick deletedCandlestick);
 
-    boolean updateLatestPrice(Price price);
+    boolean updateLatestPrice(Candlestick candlestick);
 
 }

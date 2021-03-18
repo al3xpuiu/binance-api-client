@@ -11,14 +11,13 @@ import java.util.Deque;
 public abstract class PriceManager {
 
     private String symbol;
-    private Price lowestPrice;
-    private Price highestPrice;
-    private Price latestPrice;
-
+    private Candlestick lowestCandlestick;
+    private Candlestick highestCandlestick;
+    private Candlestick latestCandlestick;
     public PriceManager() {
     }
 
-    public abstract Deque<Price> getPriceDeque();
+    public abstract Deque<Candlestick> getCandlestickDeque();
     public abstract int getMaximumCollectionLength();
     public abstract RecordDuration getRecordDuration();
 }

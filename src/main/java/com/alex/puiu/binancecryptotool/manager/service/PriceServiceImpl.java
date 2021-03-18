@@ -2,7 +2,7 @@ package com.alex.puiu.binancecryptotool.manager.service;
 
 import com.alex.puiu.binancecryptotool.manager.mapper.PriceMapper;
 import com.alex.puiu.binancecryptotool.manager.model.AggTrade;
-import com.alex.puiu.binancecryptotool.manager.model.Price;
+import com.alex.puiu.binancecryptotool.manager.model.Candlestick;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -12,7 +12,7 @@ import java.util.Optional;
 public class PriceServiceImpl implements PriceService {
 
     @Override
-    public Price averageTrade(List<AggTrade> aggTrades) {
+    public Candlestick averageTrade(List<AggTrade> aggTrades) {
         Optional<AggTrade> average = aggTrades
                 .stream()
                 .reduce((t1, t2) -> {

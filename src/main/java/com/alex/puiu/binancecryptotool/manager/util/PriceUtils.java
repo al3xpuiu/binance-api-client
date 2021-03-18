@@ -1,10 +1,10 @@
 package com.alex.puiu.binancecryptotool.manager.util;
 
-import com.alex.puiu.binancecryptotool.manager.model.Price;
+import com.alex.puiu.binancecryptotool.manager.model.Candlestick;
 
 import java.util.Collection;
 
 public interface PriceUtils {
-    Price findNewLowestPrice(Collection<Price> priceCollection);
-    Price findNewHighestPrice(Collection<Price> priceCollection);
+    Candlestick findNewLowestPrice(Collection<Candlestick> candlestickCollection);
+    Candlestick findNewHighestPrice(Collection<Candlestick> candlestickCollection);
 }

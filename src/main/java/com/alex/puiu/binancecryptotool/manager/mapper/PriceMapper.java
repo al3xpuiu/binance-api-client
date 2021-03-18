@@ -1,7 +1,7 @@
 package com.alex.puiu.binancecryptotool.manager.mapper;
 
 import com.alex.puiu.binancecryptotool.manager.model.AggTrade;
-import com.alex.puiu.binancecryptotool.manager.model.Price;
+import com.alex.puiu.binancecryptotool.manager.model.Candlestick;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -16,5 +16,5 @@ public interface PriceMapper {
             @Mapping(target = "close", source = "price"),
             @Mapping(target = "closeTime", source = "tradeTime")
     })
-    Price aggTradeToPrice(AggTrade aggTrade);
+    Candlestick aggTradeToPrice(AggTrade aggTrade);
 }

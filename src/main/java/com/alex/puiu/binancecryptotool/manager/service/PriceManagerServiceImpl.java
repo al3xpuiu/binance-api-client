@@ -1,6 +1,6 @@
 package com.alex.puiu.binancecryptotool.manager.service;
 
-import com.alex.puiu.binancecryptotool.manager.model.Price;
+import com.alex.puiu.binancecryptotool.manager.model.Candlestick;
 import com.alex.puiu.binancecryptotool.manager.model.PriceManager;
 import com.alex.puiu.binancecryptotool.manager.util.PriceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,69 +21,69 @@ public class PriceManagerServiceImpl implements PriceManagerService {
     }
 
     @Override
-    public void addPrice(Price price) {
-        Price deletedPrice;
-        if (this.priceManager.getPriceDeque().size() >= this.priceManager.getMaximumCollectionLength()) {
-            deletedPrice = this.priceManager.getPriceDeque().pop();
-            this.priceManager.getPriceDeque().offer(price);
-            this.updatePrices(price, deletedPrice);
+    public void addPrice(Candlestick candlestick) {
+        Candlestick deletedCandlestick;
+        if (this.priceManager.getCandlestickDeque().size() >= this.priceManager.getMaximumCollectionLength()) {
+            deletedCandlestick = this.priceManager.getCandlestickDeque().pop();
+            this.priceManager.getCandlestickDeque().offer(candlestick);
+            this.updatePrices(candlestick, deletedCandlestick);
             return;
         }
-        this.priceManager.getPriceDeque().offer(price);
-        this.updatePrices(price, null);
+        this.priceManager.getCandlestickDeque().offer(candlestick);
+        this.updatePrices(candlestick, null);
     }
 
     @Override
-    public void updatePrices(Price price, Price deletedPrice) {
-        updateLatestPrice(price);
-        boolean lowestPriceChanged = updateLowestPrice(price, deletedPrice);
+    public void updatePrices(Candlestick candlestick, Candlestick deletedCandlestick) {
+        updateLatestPrice(candlestick);
+        boolean lowestPriceChanged = updateLowestPrice(candlestick, deletedCandlestick);
         if (lowestPriceChanged) {
             //TODO communicate with buyer?
-            System.out.println("Lowest Price: " + price);
+            System.out.println("Lowest Price: " + candlestick);
             return;
         }
-        boolean highestPriceChanged = updateHighestPrice(price, deletedPrice);
+        boolean highestPriceChanged = updateHighestPrice(candlestick, deletedCandlestick);
         if (highestPriceChanged) {
             //TODO communicate with seller
-            System.out.println("Highest Price" + price);
+            System.out.println("Highest Price" + candlestick);
             return;
         }
 
-        System.out.println("Price " + price);
+        System.out.println("Price " + candlestick);
     }
 
     @Override
-    public boolean updateLowestPrice(Price price, Price deletedPrice) {
-        Price currentLowestPrice = this.priceManager.getLowestPrice();
-        if (currentLowestPrice == null || price != null && currentLowestPrice.getClose().compareTo(price.getClose()) > 0) {
-            this.priceManager.setLowestPrice(price);
+    public boolean updateLowestPrice(Candlestick candlestick, Candlestick deletedCandlestick) {
+        Candlestick currentLowestCandlestick = this.priceManager.getLowestCandlestick();
+        if (currentLowestCandlestick == null || candlestick != null && currentLowestCandlestick.getClose().compareTo(candlestick.getClose()) > 0) {
+            this.priceManager.setLowestCandlestick(candlestick);
             return true;
         }
-        if (deletedPrice != null && deletedPrice.equals(currentLowestPrice)) {
-            this.priceManager.setLowestPrice(this.priceUtils.findNewLowestPrice(this.priceManager.getPriceDeque()));
+        if (deletedCandlestick != null && deletedCandlestick.equals(currentLowestCandlestick)) {
+            this.priceManager.setLowestCandlestick(this.priceUtils.findNewLowestPrice(this.priceManager.getCandlestickDeque()));
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean updateHighestPrice(Price price, Price deletedPrice) {
-        Price currentHighestPrice = this.priceManager.getHighestPrice();
-        if (currentHighestPrice == null || price != null && currentHighestPrice.getClose().compareTo(price.getClose()) < 0) {
-            this.priceManager.setHighestPrice(price);
+    public boolean updateHighestPrice(Candlestick candlestick, Candlestick deletedCandlestick) {
+        Candlestick currentHighestCandlestick = this.priceManager.getHighestCandlestick();
+        if (currentHighestCandlestick == null || candlestick != null && currentHighestCandlestick.getClose().compareTo(candlestick.getClose()) < 0) {
+            this.priceManager.setHighestCandlestick(candlestick);
             return true;
         }
-        if (deletedPrice != null && deletedPrice.equals(currentHighestPrice)) {
-            this.priceManager.setHighestPrice(this.priceUtils.findNewHighestPrice(this.priceManager.getPriceDeque()));
+        if (deletedCandlestick != null && deletedCandlestick.equals(currentHighestCandlestick)) {
+            this.priceManager.setHighestCandlestick(this.priceUtils.findNewHighestPrice(this.priceManager.getCandlestickDeque()));
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean updateLatestPrice(Price price) {
-        if (price != null) {
-            this.priceManager.setLatestPrice(price);
+    public boolean updateLatestPrice(Candlestick candlestick) {
+        if (candlestick != null) {
+            this.priceManager.setLatestCandlestick(candlestick);
             return true;
         }
         return false;

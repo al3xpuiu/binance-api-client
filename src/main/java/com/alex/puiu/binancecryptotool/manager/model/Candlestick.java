@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
-public class Price {
+public class Candlestick {
 
     private BigDecimal open;
     private BigDecimal close;
@@ -24,7 +24,7 @@ public class Price {
 
     private int numberOfTrades;
 
-    public Price() {
+    public Candlestick() {
         this.open = BigDecimal.ZERO;
         this.close = BigDecimal.ZERO;
         this.low = BigDecimal.ZERO;
@@ -38,8 +38,8 @@ public class Price {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Price price = (Price) o;
-        return closeTime == price.closeTime && Objects.equals(close, price.close);
+        Candlestick candlestick = (Candlestick) o;
+        return closeTime == candlestick.closeTime && Objects.equals(close, candlestick.close);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.alex.puiu.binancecryptotool.manager.service;
 
 import com.alex.puiu.binancecryptotool.manager.model.AggTrade;
-import com.alex.puiu.binancecryptotool.manager.model.Price;
+import com.alex.puiu.binancecryptotool.manager.model.Candlestick;
 import com.alex.puiu.binancecryptotool.message.PriceErrorMessage;
 import com.alex.puiu.binancecryptotool.util.ObjectUtils;
 import com.alex.puiu.binancecryptotool.util.ObjectUtilsImpl;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-class PriceServiceImplTest {
+class CandlestickServiceImplTest {
 
     private PriceService priceService;
     private List<AggTrade> aggTrades;
@@ -60,9 +60,9 @@ class PriceServiceImplTest {
         //give
 
         //when
-        Price price = this.priceService.averageTrade(this.aggTrades);
+        Candlestick candlestick = this.priceService.averageTrade(this.aggTrades);
 
         //then
-        Assertions.assertEquals(EXPECTED_PRICE, price.getClose(), PriceErrorMessage.VALUE_ERROR);
+        Assertions.assertEquals(EXPECTED_PRICE, candlestick.getClose(), PriceErrorMessage.VALUE_ERROR);
     }
 }

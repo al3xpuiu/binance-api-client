@@ -1,7 +1,6 @@
 package com.alex.puiu.binancecryptotool.binanceconnector.mapper;
 
-import com.alex.puiu.binancecryptotool.binanceconnector.model.Candlestick;
-import com.alex.puiu.binancecryptotool.manager.model.Price;
+import com.alex.puiu.binancecryptotool.manager.model.Candlestick;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -10,6 +9,5 @@ public interface CandlestickMapper {
 
     CandlestickMapper INSTANCE = Mappers.getMapper(CandlestickMapper.class);
 
-    Candlestick toAppCandlestick(com.binance.api.client.domain.market.Candlestick candlestick);
-    Price fromCandlestick(com.binance.api.client.domain.market.Candlestick candlestick);
+    Candlestick fromCandlestick(com.binance.api.client.domain.market.Candlestick candlestick);
 }

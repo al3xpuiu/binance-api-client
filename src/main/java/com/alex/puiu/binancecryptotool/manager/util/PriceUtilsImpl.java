@@ -1,6 +1,6 @@
 package com.alex.puiu.binancecryptotool.manager.util;
 
-import com.alex.puiu.binancecryptotool.manager.model.Price;
+import com.alex.puiu.binancecryptotool.manager.model.Candlestick;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -10,18 +10,18 @@ import java.util.Comparator;
 public class PriceUtilsImpl implements PriceUtils {
 
     @Override
-    public Price findNewLowestPrice(Collection<Price> priceCollection) {
-        return priceCollection
+    public Candlestick findNewLowestPrice(Collection<Candlestick> candlestickCollection) {
+        return candlestickCollection
                 .stream()
-                .min(Comparator.comparing(Price::getClose))
+                .min(Comparator.comparing(Candlestick::getClose))
                 .orElseThrow(IllegalStateException::new);
     }
 
     @Override
-    public Price findNewHighestPrice(Collection<Price> priceCollection) {
-        return priceCollection
+    public Candlestick findNewHighestPrice(Collection<Candlestick> candlestickCollection) {
+        return candlestickCollection
                 .stream()
-                .max(Comparator.comparing(Price::getClose))
+                .max(Comparator.comparing(Candlestick::getClose))
                 .orElseThrow(IllegalStateException::new);
     }
 }
