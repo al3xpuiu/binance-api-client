@@ -8,13 +8,13 @@ import java.util.Deque;
 
 @Getter
 @Setter
-public abstract class PriceManager {
+public abstract class CandlestickManager {
 
     private String symbol;
     private Candlestick lowestCandlestick;
     private Candlestick highestCandlestick;
     private Candlestick latestCandlestick;
-    public PriceManager() {
+    public CandlestickManager() {
     }
 
     public abstract Deque<Candlestick> getCandlestickDeque();

@@ -3,8 +3,8 @@ package com.alex.puiu.binancecryptotool.manager.service;
 import com.alex.puiu.binancecryptotool.manager.mapper.PriceMapper;
 import com.alex.puiu.binancecryptotool.manager.model.AggTrade;
 import com.alex.puiu.binancecryptotool.manager.model.Candlestick;
-import com.alex.puiu.binancecryptotool.manager.model.PriceManager;
-import com.alex.puiu.binancecryptotool.manager.model.PriceManagerFixPeriod;
+import com.alex.puiu.binancecryptotool.manager.model.CandlestickManager;
+import com.alex.puiu.binancecryptotool.manager.model.CandlestickManagerFixPeriod;
 import com.alex.puiu.binancecryptotool.manager.util.PriceUtils;
 import com.alex.puiu.binancecryptotool.manager.util.RecordDuration;
 import com.alex.puiu.binancecryptotool.util.ObjectUtils;
@@ -27,8 +27,8 @@ import static com.alex.puiu.binancecryptotool.message.PriceErrorMessage.*;
 
 class CandlestickManagerServiceImplTest {
 
-    private PriceManagerService priceManagerService;
-    private final PriceManager priceManager = new PriceManagerFixPeriod(240, RecordDuration.TWENTY_FOUR_HOURS);
+    private CandlestickManagerService candlestickManagerService;
+    private final CandlestickManager candlestickManager = new CandlestickManagerFixPeriod(240, RecordDuration.TWENTY_FOUR_HOURS);
     private static final BigDecimal PRICE_VALUE_ZERO = BigDecimal.ZERO;
     private static final BigDecimal PRICE_VALUE_ONE = BigDecimal.ONE;
     private static final BigDecimal LOWEST_PRICE_VALUE = new BigDecimal("0.00000001");
@@ -40,11 +40,11 @@ class CandlestickManagerServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        this.priceManagerService = new PriceManagerServiceImpl(this.priceUtils, this.priceManager);
+        this.candlestickManagerService = new CandlestickManagerServiceImpl(this.priceUtils, this.candlestickManager);
         ObjectUtils<AggTrade> objectUtils = new ObjectUtilsImpl<>();
 
         List<AggTrade> trades = objectUtils.readObjectsFromFile(new File(SERIALIZED_AGG_TRADES_PATH));
-        Deque<Candlestick> candlestickDeque = priceManager.getCandlestickDeque();
+        Deque<Candlestick> candlestickDeque = candlestickManager.getCandlestickDeque();
         trades
                 .stream()
                 .limit(6)
@@ -57,12 +57,12 @@ class CandlestickManagerServiceImplTest {
         Candlestick candlestick = new Candlestick();
         candlestick.setClose(PRICE_VALUE_ONE);
         candlestick.setCloseTime(new Date().getTime());
-        PriceManagerService spiedService = Mockito.spy(priceManagerService);
+        CandlestickManagerService spiedService = Mockito.spy(candlestickManagerService);
 
         //When
-        Mockito.doNothing().when(spiedService).updatePrices(Mockito.any(), Mockito.any());
-        spiedService.addPrice(candlestick);
-        Candlestick insertedElement = this.priceManager.getCandlestickDeque().getLast();
+        Mockito.doNothing().when(spiedService).updateCandlesticks(Mockito.any(), Mockito.any());
+        spiedService.addCandlestick(candlestick);
+        Candlestick insertedElement = this.candlestickManager.getCandlestickDeque().getLast();
 
         //Then
         Assertions.assertEquals(insertedElement.getClose(), candlestick.getClose(), VALUE_ERROR);
@@ -75,13 +75,13 @@ class CandlestickManagerServiceImplTest {
         Candlestick candlestick = new Candlestick();
         candlestick.setClose(PRICE_VALUE_ONE);
         candlestick.setCloseTime(new Date().getTime());
-        PriceManagerService spiedService = Mockito.spy(priceManagerService);
-        this.priceManager.getCandlestickDeque().pop();
+        CandlestickManagerService spiedService = Mockito.spy(candlestickManagerService);
+        this.candlestickManager.getCandlestickDeque().pop();
 
         //When
-        Mockito.doNothing().when(spiedService).updatePrices(Mockito.any(), Mockito.any());
-        spiedService.addPrice(candlestick);
-        Candlestick insertedElement = this.priceManager.getCandlestickDeque().getLast();
+        Mockito.doNothing().when(spiedService).updateCandlesticks(Mockito.any(), Mockito.any());
+        spiedService.addCandlestick(candlestick);
+        Candlestick insertedElement = this.candlestickManager.getCandlestickDeque().getLast();
 
         //Then
         Assertions.assertEquals(insertedElement.getClose(), candlestick.getClose(), VALUE_ERROR);
@@ -94,15 +94,15 @@ class CandlestickManagerServiceImplTest {
         Candlestick candlestick = new Candlestick();
         candlestick.setClose(LOWEST_PRICE_VALUE);
         candlestick.setCloseTime(new Date().getTime());
-        this.priceManager.getCandlestickDeque().offer(candlestick);
-        this.priceManager.setLowestCandlestick(this.priceManager.getCandlestickDeque().peek());
+        this.candlestickManager.getCandlestickDeque().offer(candlestick);
+        this.candlestickManager.setLowestCandlestick(this.candlestickManager.getCandlestickDeque().peek());
 
         //when
-        boolean result = this.priceManagerService.updateLowestPrice(candlestick, null);
+        boolean result = this.candlestickManagerService.updateLowestCandlestick(candlestick, null);
 
         //then
         Assertions.assertTrue(result, BOOLEAN_ERROR);
-        Assertions.assertEquals(candlestick, this.priceManager.getLowestCandlestick(),VALUE_ERROR);
+        Assertions.assertEquals(candlestick, this.candlestickManager.getLowestCandlestick(),VALUE_ERROR);
 
     }
 
@@ -112,7 +112,7 @@ class CandlestickManagerServiceImplTest {
         Candlestick deletedCandlestick = new Candlestick();
         deletedCandlestick.setClose(PRICE_VALUE_ONE);
         deletedCandlestick.setCloseTime(new Date().getTime());
-        this.priceManager.setLowestCandlestick(deletedCandlestick);
+        this.candlestickManager.setLowestCandlestick(deletedCandlestick);
 
         Candlestick newLowestCandlestick = new Candlestick();
         newLowestCandlestick.setClose(LOWEST_PRICE_VALUE);
@@ -120,11 +120,11 @@ class CandlestickManagerServiceImplTest {
 
         //when
         Mockito.when(this.priceUtils.findNewLowestPrice(Mockito.any())).thenReturn(newLowestCandlestick);
-        boolean result = this.priceManagerService.updateLowestPrice(null, deletedCandlestick);
+        boolean result = this.candlestickManagerService.updateLowestCandlestick(null, deletedCandlestick);
 
         //then
         Assertions.assertTrue(result, BOOLEAN_ERROR);
-        Assertions.assertEquals(newLowestCandlestick, this.priceManager.getLowestCandlestick(),VALUE_ERROR);
+        Assertions.assertEquals(newLowestCandlestick, this.candlestickManager.getLowestCandlestick(),VALUE_ERROR);
 
     }
 
@@ -134,20 +134,20 @@ class CandlestickManagerServiceImplTest {
         Candlestick deletedCandlestick = new Candlestick();
         deletedCandlestick.setClose(PRICE_VALUE_ONE);
         deletedCandlestick.setCloseTime(new Date().getTime());
-        Candlestick lowestCandlestick = this.priceManager.getCandlestickDeque().peek();
-        this.priceManager.setLowestCandlestick(lowestCandlestick);
+        Candlestick lowestCandlestick = this.candlestickManager.getCandlestickDeque().peek();
+        this.candlestickManager.setLowestCandlestick(lowestCandlestick);
 
         Candlestick addedCandlestick = new Candlestick();
         addedCandlestick.setClose(PRICE_VALUE_ONE);
         addedCandlestick.setCloseTime(new Date().getTime());
 
         //when
-        boolean result = this.priceManagerService.updateLowestPrice(addedCandlestick, deletedCandlestick);
+        boolean result = this.candlestickManagerService.updateLowestCandlestick(addedCandlestick, deletedCandlestick);
 
         //then
         Assertions.assertFalse(result, BOOLEAN_ERROR);
-        Assertions.assertNotEquals(addedCandlestick, this.priceManager.getLowestCandlestick(),VALUE_ERROR);
-        Assertions.assertEquals(lowestCandlestick, this.priceManager.getLowestCandlestick(),VALUE_ERROR);
+        Assertions.assertNotEquals(addedCandlestick, this.candlestickManager.getLowestCandlestick(),VALUE_ERROR);
+        Assertions.assertEquals(lowestCandlestick, this.candlestickManager.getLowestCandlestick(),VALUE_ERROR);
     }
 
     @Test
@@ -156,15 +156,15 @@ class CandlestickManagerServiceImplTest {
         Candlestick candlestick = new Candlestick();
         candlestick.setClose(HIGHEST_PRICE_VALUE);
         candlestick.setCloseTime(new Date().getTime());
-        this.priceManager.getCandlestickDeque().offer(candlestick);
-        this.priceManager.setHighestCandlestick(this.priceManager.getCandlestickDeque().peek());
+        this.candlestickManager.getCandlestickDeque().offer(candlestick);
+        this.candlestickManager.setHighestCandlestick(this.candlestickManager.getCandlestickDeque().peek());
 
         //when
-        boolean result = this.priceManagerService.updateHighestPrice(candlestick, null);
+        boolean result = this.candlestickManagerService.updateHighestCandlestick(candlestick, null);
 
         //then
         Assertions.assertTrue(result, BOOLEAN_ERROR);
-        Assertions.assertEquals(candlestick, this.priceManager.getHighestCandlestick(),VALUE_ERROR);
+        Assertions.assertEquals(candlestick, this.candlestickManager.getHighestCandlestick(),VALUE_ERROR);
 
     }
 
@@ -174,7 +174,7 @@ class CandlestickManagerServiceImplTest {
         Candlestick deletedCandlestick = new Candlestick();
         deletedCandlestick.setClose(PRICE_VALUE_ONE);
         deletedCandlestick.setCloseTime(new Date().getTime());
-        this.priceManager.setHighestCandlestick(deletedCandlestick);
+        this.candlestickManager.setHighestCandlestick(deletedCandlestick);
 
         Candlestick newHighestCandlestick = new Candlestick();
         newHighestCandlestick.setClose(HIGHEST_PRICE_VALUE);
@@ -182,11 +182,11 @@ class CandlestickManagerServiceImplTest {
 
         //when
         Mockito.when(this.priceUtils.findNewHighestPrice(Mockito.any())).thenReturn(newHighestCandlestick);
-        boolean result = this.priceManagerService.updateHighestPrice(null, deletedCandlestick);
+        boolean result = this.candlestickManagerService.updateHighestCandlestick(null, deletedCandlestick);
 
         //then
         Assertions.assertTrue(result, BOOLEAN_ERROR);
-        Assertions.assertEquals(newHighestCandlestick, this.priceManager.getHighestCandlestick(),VALUE_ERROR);
+        Assertions.assertEquals(newHighestCandlestick, this.candlestickManager.getHighestCandlestick(),VALUE_ERROR);
 
     }
 
@@ -196,20 +196,20 @@ class CandlestickManagerServiceImplTest {
         Candlestick deletedCandlestick = new Candlestick();
         deletedCandlestick.setClose(PRICE_VALUE_ZERO);
         deletedCandlestick.setCloseTime(new Date().getTime());
-        Candlestick highestCandlestick = this.priceManager.getCandlestickDeque().peek();
-        this.priceManager.setHighestCandlestick(highestCandlestick);
+        Candlestick highestCandlestick = this.candlestickManager.getCandlestickDeque().peek();
+        this.candlestickManager.setHighestCandlestick(highestCandlestick);
 
         Candlestick addedCandlestick = new Candlestick();
         addedCandlestick.setClose(PRICE_VALUE_ZERO);
         addedCandlestick.setCloseTime(new Date().getTime());
 
         //when
-        boolean result = this.priceManagerService.updateHighestPrice(addedCandlestick, deletedCandlestick);
+        boolean result = this.candlestickManagerService.updateHighestCandlestick(addedCandlestick, deletedCandlestick);
 
         //then
         Assertions.assertFalse(result, BOOLEAN_ERROR);
-        Assertions.assertNotEquals(addedCandlestick, this.priceManager.getHighestCandlestick(),VALUE_ERROR);
-        Assertions.assertEquals(highestCandlestick, this.priceManager.getHighestCandlestick(),VALUE_ERROR);
+        Assertions.assertNotEquals(addedCandlestick, this.candlestickManager.getHighestCandlestick(),VALUE_ERROR);
+        Assertions.assertEquals(highestCandlestick, this.candlestickManager.getHighestCandlestick(),VALUE_ERROR);
     }
 
     @Test
@@ -219,10 +219,10 @@ class CandlestickManagerServiceImplTest {
         candlestick.setClose(PRICE_VALUE_ONE);
         candlestick.setCloseTime(new Date().getTime());
         //when
-        boolean result = this.priceManagerService.updateLatestPrice(candlestick);
+        boolean result = this.candlestickManagerService.updateLatestCandlestick(candlestick);
 
         //then
         Assertions.assertTrue(result, BOOLEAN_ERROR);
-        Assertions.assertEquals(candlestick, this.priceManager.getLatestCandlestick(),VALUE_ERROR);
+        Assertions.assertEquals(candlestick, this.candlestickManager.getLatestCandlestick(),VALUE_ERROR);
     }
 }
