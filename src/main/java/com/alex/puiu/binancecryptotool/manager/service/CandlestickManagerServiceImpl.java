@@ -23,13 +23,13 @@ public class CandlestickManagerServiceImpl implements CandlestickManagerService 
     @Override
     public void addCandlestick(Candlestick candlestick) {
         Candlestick deletedCandlestick;
-        if (this.candlestickManager.getCandlestickDeque().size() >= this.candlestickManager.getMaximumCollectionLength()) {
-            deletedCandlestick = this.candlestickManager.getCandlestickDeque().pop();
-            this.candlestickManager.getCandlestickDeque().offer(candlestick);
+        if (this.candlestickManager.getCandlestickMap().size() >= this.candlestickManager.getMaximumCollectionLength()) {
+            deletedCandlestick = this.candlestickManager.getCandlestickMap().pollFirstEntry().getValue();
+            this.candlestickManager.getCandlestickMap().put(candlestick.getOpenTime(), candlestick);
             this.updateCandlesticks(candlestick, deletedCandlestick);
             return;
         }
-        this.candlestickManager.getCandlestickDeque().offer(candlestick);
+        this.candlestickManager.getCandlestickMap().put(candlestick.getOpenTime(), candlestick);
         this.updateCandlesticks(candlestick, null);
     }
 
@@ -60,7 +60,7 @@ public class CandlestickManagerServiceImpl implements CandlestickManagerService 
             return true;
         }
         if (deletedCandlestick != null && deletedCandlestick.equals(currentLowestCandlestick)) {
-            this.candlestickManager.setLowestCandlestick(this.priceUtils.findNewLowestPrice(this.candlestickManager.getCandlestickDeque()));
+            this.candlestickManager.setLowestCandlestick(this.priceUtils.findNewLowestPrice(this.candlestickManager.getCandlestickMap()));
             return true;
         }
         return false;
@@ -74,7 +74,7 @@ public class CandlestickManagerServiceImpl implements CandlestickManagerService 
             return true;
         }
         if (deletedCandlestick != null && deletedCandlestick.equals(currentHighestCandlestick)) {
-            this.candlestickManager.setHighestCandlestick(this.priceUtils.findNewHighestPrice(this.candlestickManager.getCandlestickDeque()));
+            this.candlestickManager.setHighestCandlestick(this.priceUtils.findNewHighestPrice(this.candlestickManager.getCandlestickMap()));
             return true;
         }
         return false;

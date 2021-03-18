@@ -3,12 +3,13 @@ package com.alex.puiu.binancecryptotool.manager.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @Getter
 @Setter
-public class Candlestick {
+public class Candlestick implements Serializable {
 
     private BigDecimal open;
     private BigDecimal close;
@@ -39,19 +40,19 @@ public class Candlestick {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Candlestick candlestick = (Candlestick) o;
-        return closeTime == candlestick.closeTime && Objects.equals(close, candlestick.close);
+        return openTime == candlestick.openTime && Objects.equals(close, candlestick.close);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(close, closeTime);
+        return Objects.hash(close, openTime);
     }
 
     @Override
     public String toString() {
         return "Price{" +
                 "close=" + close +
-                ", closeTime=" + closeTime +
+                ", openTime=" + openTime +
                 '}';
     }
 }
