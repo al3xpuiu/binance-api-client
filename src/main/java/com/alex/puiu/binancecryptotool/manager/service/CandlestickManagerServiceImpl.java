@@ -10,14 +10,17 @@ import org.springframework.stereotype.Service;
 public class CandlestickManagerServiceImpl implements CandlestickManagerService {
 
     private final CandlestickManager candlestickManager;
-
+    private final ConcernManagerService concernManagerService;
 
     private final PriceUtils priceUtils;
 
     @Autowired
-    public CandlestickManagerServiceImpl(PriceUtils priceUtils, CandlestickManager candlestickManager) {
+    public CandlestickManagerServiceImpl(PriceUtils priceUtils,
+                                         CandlestickManager candlestickManager,
+                                         ConcernManagerService concernManagerService) {
         this.candlestickManager = candlestickManager;
         this.priceUtils = priceUtils;
+        this.concernManagerService = concernManagerService;
     }
 
     @Override
@@ -37,13 +40,13 @@ public class CandlestickManagerServiceImpl implements CandlestickManagerService 
     public void updateCandlesticks(Candlestick candlestick, Candlestick deletedCandlestick) {
         updateLatestCandlestick(candlestick);
         boolean lowestPriceChanged = updateLowestCandlestick(candlestick, deletedCandlestick);
-        if (lowestPriceChanged) {
+        if (this.concernManagerService.isBuyerActive()) {
             //TODO communicate with buyer?
             System.out.println("Lowest Price: " + candlestick);
             return;
         }
         boolean highestPriceChanged = updateHighestCandlestick(candlestick, deletedCandlestick);
-        if (highestPriceChanged) {
+        if (highestPriceChanged || this.concernManagerService.isSellerActive()) {
             //TODO communicate with seller
             System.out.println("Highest Price" + candlestick);
             return;
