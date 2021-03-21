@@ -11,7 +11,6 @@ public class CandlestickManagerServiceImpl implements CandlestickManagerService 
 
     private final CandlestickManager candlestickManager;
     private final ConcernManagerService concernManagerService;
-
     private final PriceUtils priceUtils;
 
     @Autowired
@@ -40,19 +39,24 @@ public class CandlestickManagerServiceImpl implements CandlestickManagerService 
     public void updateCandlesticks(Candlestick candlestick, Candlestick deletedCandlestick) {
         updateLatestCandlestick(candlestick);
         boolean lowestPriceChanged = updateLowestCandlestick(candlestick, deletedCandlestick);
+        boolean highestPriceChanged = updateHighestCandlestick(candlestick, deletedCandlestick);
+
         if (this.concernManagerService.isBuyerActive()) {
-            //TODO communicate with buyer?
+            this.concernManagerService.addCandlestickToBuyer(candlestick);
             System.out.println("Lowest Price: " + candlestick);
             return;
         }
-        boolean highestPriceChanged = updateHighestCandlestick(candlestick, deletedCandlestick);
-        if (highestPriceChanged || this.concernManagerService.isSellerActive()) {
-            //TODO communicate with seller
+
+        if (this.concernManagerService.isSellerActive()) {
+            this.concernManagerService.addCandlestickToSeller(candlestick);
             System.out.println("Highest Price" + candlestick);
             return;
         }
 
-        System.out.println("Price " + candlestick);
+        if (highestPriceChanged) {
+            this.concernManagerService.activateSeller(candlestick);
+            System.out.println("Seller activated with on: " + candlestick);
+        }
     }
 
     @Override

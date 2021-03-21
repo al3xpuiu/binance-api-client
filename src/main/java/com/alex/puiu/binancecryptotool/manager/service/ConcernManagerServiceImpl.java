@@ -7,12 +7,13 @@ import org.springframework.stereotype.Service;
 
 @Getter
 @Service
+//should have web request scope
 public class ConcernManagerServiceImpl implements ConcernManagerService {
 
-    private final SellerService service;
+    private final SellerService sellerService;
 
-    public ConcernManagerServiceImpl(SellerService service) {
-        this.service = service;
+    public ConcernManagerServiceImpl(SellerService sellerService) {
+        this.sellerService = sellerService;
     }
 
     private boolean sellerActive;
@@ -38,5 +39,15 @@ public class ConcernManagerServiceImpl implements ConcernManagerService {
         priceManagerActive = true;
         sellerActive = false;
         buyerActive = false;
+    }
+
+    @Override
+    public void addCandlestickToSeller(Candlestick highestCandlestick) {
+        this.sellerService.studyCandlestick(highestCandlestick);
+    }
+
+    @Override
+    public void addCandlestickToBuyer(Candlestick highestCandlestick) {
+
     }
 }

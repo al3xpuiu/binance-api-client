@@ -4,15 +4,17 @@ import com.alex.puiu.binancecryptotool.manager.model.Candlestick;
 
 public interface ConcernManagerService {
 
-    public void activateSeller(Candlestick highestCandlestick);
+    void activateSeller(Candlestick highestCandlestick);
+    void addCandlestickToSeller(Candlestick highestCandlestick);
 
-    public void activateBuyer(Candlestick lowestCandlestick);
+    void activateBuyer(Candlestick lowestCandlestick);
+    void addCandlestickToBuyer(Candlestick highestCandlestick);
 
-    public void activatePriceManager();
+    void activatePriceManager();
 
-    public boolean isSellerActive();
+    boolean isSellerActive();
 
-    public boolean isBuyerActive();
+    boolean isBuyerActive();
 
-    public boolean isPriceManagerActive();
+    boolean isPriceManagerActive();
 }

@@ -35,10 +35,13 @@ class CandlestickManagerServiceImplTest {
     @Mock
     private PriceUtils priceUtils;
 
+    @Mock
+    private ConcernManagerService concernManagerService;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        this.candlestickManagerService = new CandlestickManagerServiceImpl(this.priceUtils, this.candlestickManager);
+        this.candlestickManagerService = new CandlestickManagerServiceImpl(this.priceUtils, this.candlestickManager, this.concernManagerService);
         ObjectUtils<Candlestick> objectUtils = new ObjectUtilsImpl<>();
 
         List<Candlestick> trades = objectUtils.readObjectsFromFile(new File(SERIALIZED_CANDLESTICKS_PATH));
